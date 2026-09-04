@@ -1,6 +1,6 @@
 ---
 title: "Reportes trimestrales"
-image: foto.jpg
+image: foto_gato.jpg
 about:
   template: trestles   # opciones: jolla, trestles, solana, marquee, broadside
   links:
