@@ -2,7 +2,7 @@
 title: "Reportes trimestrales"
 image: foto_gato.jpg
 about:
-  template: trestles   # opciones: jolla, trestles, solana, marquee, broadside
+  template: jolla   # opciones: jolla, trestles, solana, marquee, broadside
   links:
     - icon: github
       text: GitHub
