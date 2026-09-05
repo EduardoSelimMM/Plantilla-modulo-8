@@ -1,5 +1,6 @@
 # Instrucciones
 
+## Paso 1:
 Ir al botón de "Use this template" -> "Create a new repository"
 
 Llenar los campos
