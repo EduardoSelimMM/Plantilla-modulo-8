@@ -109,3 +109,73 @@ Ve a la página principal de tu repositorio (aquí en GitHub). Del lado derecho 
 
 Marca la casilla de "Use your GitHub Pages website" y "Save changes". Ahora verás la dirección de tu sitio justo debajo de la palabra "About"
 
+## ¿Quieres agregar chunks de R y Python en un mismo reporte?
+
+Ve archivo "publish.yml"
+
+```
+name: Publicar sitio Quarto en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Instalar R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "release"
+
+      - name: Instalar paquetes de R
+        uses: r-lib/actions/setup-r-dependencies@v2
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+
+      - name: Instalar paquetes de Python
+        run: pip install -r requirements.txt
+
+      - name: Renderizar sitio
+        run: quarto render
+        env:
+          RETICULATE_PYTHON: ${{ env.pythonLocation }}/bin/python3
+
+      - name: Subir artefacto para Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
